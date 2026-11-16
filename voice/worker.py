@@ -13,6 +13,7 @@ from answers import ask_engineer
 from audio_io import Endpoint, listen, output_onset
 from faster_whisper import WhisperModel
 from faster_whisper.vad import get_vad_model
+from websockets.exceptions import WebSocketException
 
 
 def report(status, **fields):
@@ -69,6 +70,7 @@ def main():
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         text=True,
+        encoding="utf-8",
         creationflags=subprocess.CREATE_NO_WINDOW,
     )
     try:
@@ -127,7 +129,7 @@ def main():
                     submittedMs=round((first_queue - end) * 1000),
                     error=turn.get("error", ""),
                 )
-            except (OSError, ValueError, RuntimeError, TimeoutError) as exc:
+            except (OSError, ValueError, RuntimeError, TimeoutError, WebSocketException) as exc:
                 if speaker.poll() is not None:
                     raise
                 report("ready", error=str(exc))

@@ -665,7 +665,9 @@ async def live(socket: WebSocket):
                     restored, selected_label = app.state.advisor.restore_decision(gp_key(raw,held),frame["session"],frame["lap"],car["currentMs"])
                     plan = restored or Plan(start=tyre, stops=())
                 token = ("held/" if held else "") + f'{frame["session"]}:{frame["mode"]}:{frame["lap"]}'
-                frame["microphoneMode"] = app.state.microphone.state()["enabled"]
+                mic_state = app.state.microphone.state()
+                frame["microphoneMode"] = mic_state["enabled"]
+                frame["radioStatus"] = mic_state["status"]
                 frame.update(token=token, selectedPlan=selected_label, plan=plan.wire() if plan else {"start":None,"stops":[]},
                              notice=notice,wheel={"keys":keys,"device":app.state.wheel.description(),"bindings":{}})
                 frame["gameSync"] = app.state.game_sync.observe(raw)
@@ -679,7 +681,9 @@ async def live(socket: WebSocket):
                 if isinstance(cmd,dict) and cmd.get("type") == "radio":
                     try:
                         turn = await live_radio(cmd, latest, frame)
-                    except (CodexError, OSError, RuntimeError, ValueError, TypeError, TimeoutError) as exc:
+                    except ValueError as exc:
+                        turn = {"error":str(exc), "speech":"Unable to verify that request. No plans changed."}
+                    except (CodexError, OSError, RuntimeError, TypeError, TimeoutError) as exc:
                         turn = {"error": type(exc).__name__, "speech":"Radio link unavailable. Try again."}
                     await socket.send_json({"radio":turn})
                     continue

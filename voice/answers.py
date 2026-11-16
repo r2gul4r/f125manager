@@ -7,15 +7,25 @@ from pathlib import Path
 
 from websockets.sync.client import connect
 
+
 def ask_engineer(port, text, folder):
     with connect(f"ws://127.0.0.1:{port}/ws/live", proxy=None, open_timeout=3) as ws:
         packet = json.loads(ws.recv(timeout=5))
         frame = packet.get("frame") or {}
         if packet.get("status") != "Live" or frame.get("player", -1) < 0:
-            return {"speech":"Waiting for live telemetry."}, frame, None
+            return {"speech": "Waiting for live telemetry."}, frame, None
         damage = wing(frame, folder)
-        ws.send(json.dumps({"type":"radio", "key":os.environ["F125_RADIO_TURN_KEY"],
-                            "question":text, "session":frame["session"], "wingDamage":damage}))
+        ws.send(
+            json.dumps(
+                {
+                    "type": "radio",
+                    "key": os.environ["F125_RADIO_TURN_KEY"],
+                    "question": text,
+                    "session": frame["session"],
+                    "wingDamage": damage,
+                }
+            )
+        )
         while True:
             packet = json.loads(ws.recv(timeout=95))
             if "radio" in packet:

@@ -101,7 +101,7 @@ export function MyRace({frame, cars, editor, select, ready,codex}: {
       <p className="race-note" lang="ko" role="status">{editor.message ?? frame.notice}</p>
       {frame.gameSync && <p className="race-note" lang="ko" role="status">{frame.gameSync}</p>}
       {frame.advisor && !retired && <div className="codex-actions">
-        <button aria-pressed={cursor===advisorSlot} disabled={frame.microphoneMode || !ready || !frame.advisor.available || frame.advisor.pending} aria-busy={frame.advisor.pending} onClick={()=>codex('askCodex')}>{frame.microphoneMode?'Radio · UDP 3':frame.advisor.pending?'Codex thinking…':'Request Codex plan'}</button>
+        <button aria-pressed={cursor===advisorSlot} disabled={frame.microphoneMode || !ready || !frame.advisor.available || frame.advisor.pending} aria-busy={frame.advisor.pending || frame.radioStatus==='thinking'} onClick={()=>codex('askCodex')}>{frame.microphoneMode?({thinking:'Codex thinking…',listening:'Radio listening…',transcribing:'Transcribing…',speaking:'Engineer speaking…'}[frame.radioStatus??''] ?? 'Radio · UDP 3'):frame.advisor.pending?'Codex thinking…':'Request Codex plan'}</button>
         {frame.advisor.plan && <><button aria-pressed={cursor===advisorSlot+1} disabled={!ready || !frame.advisor.available} onClick={()=>codex('applyCodex')}>{frame.recordingHold || frame.source==='Replay'?'Apply to replay':'Apply Codex plan'}</button>
           {'start' in frame.advisor.plan && <StintBar plan={frame.advisor.plan} total={frame.totalLaps}/>}
           <p lang="ko">{frame.advisor.reason}</p></>}

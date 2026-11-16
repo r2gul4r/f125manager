@@ -52,6 +52,7 @@ export type ServiceForecast = [tyres:ServiceEstimate, frontWing:ServiceEstimate]
 export interface PitComparison {lap:number; predicted:number|null; recalculated?:number|null; actual:number|null; entryMs:number; exitMs:number|null; serviceMs?:number; wingRepair?:boolean; penalty?:boolean; safety?:number; safetyChanged?:boolean; safetyStates?:number[]; serviceDelayed?:boolean|null; pitExperience?:number|null; serviceSafety?:number|null; serviceVerdict?:"normal"|"suspectedDelay"|"overlap"|"outsideProfile"|null; serviceIncluded?:boolean; lossIncluded?:boolean; measuredLossMs?:number|null; transitReferences?:number; tyreChanged?:boolean|null; repairs?:string[]; entryScenarios?:ServiceForecast|null; recordedScenarios?:ServiceForecast|null}
 export interface Frame {
   microphoneMode?: boolean;
+  radioStatus?: string;
   recordingId?:string; raceFinished?:boolean;
   lastPitExit?:MeasuredExit|null;
   displayStamp?:{at:number;branch:number;tick:number};
