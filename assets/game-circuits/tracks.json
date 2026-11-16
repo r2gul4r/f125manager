@@ -1,0 +1,178 @@
+{
+  "0": {
+    "id": "melbourne",
+    "officialName": "Albert Park Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackmelbournedetailed.webp"
+  },
+  "2": {
+    "id": "shanghai",
+    "officialName": "Shanghai International Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackshanghaidetailed.webp"
+  },
+  "3": {
+    "id": "bahrain",
+    "officialName": "Bahrain International Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026tracksakhirdetailed.webp",
+    "timingArtwork": true
+  },
+  "4": {
+    "id": "catalunya",
+    "officialName": "Circuit de Barcelona-Catalunya",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackcatalunyadetailed.webp"
+  },
+  "5": {
+    "id": "monaco",
+    "officialName": "Circuit de Monaco",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackmontecarlodetailed.webp"
+  },
+  "6": {
+    "id": "montreal",
+    "officialName": "Circuit Gilles Villeneuve",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackmontrealdetailed.webp"
+  },
+  "7": {
+    "id": "silverstone",
+    "officialName": "Silverstone Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026tracksilverstonedetailed.webp"
+  },
+  "9": {
+    "id": "hungaroring",
+    "officialName": "Hungaroring",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackhungaroringdetailed.webp"
+  },
+  "10": {
+    "id": "spa-francorchamps",
+    "officialName": "Circuit de Spa-Francorchamps",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackspafrancorchampsdetailed.webp"
+  },
+  "11": {
+    "id": "monza",
+    "officialName": "Autodromo Nazionale Monza",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackmonzadetailed.webp"
+  },
+  "12": {
+    "id": "marina-bay",
+    "officialName": "Marina Bay Street Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026tracksingaporedetailed.webp"
+  },
+  "13": {
+    "id": "suzuka",
+    "officialName": "Suzuka Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026tracksuzukadetailed.webp"
+  },
+  "14": {
+    "id": "yas-marina",
+    "timingArtwork": true,
+    "officialName": "Yas Marina Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackyasmarinacircuitdetailed.webp"
+  },
+  "15": {
+    "id": "austin",
+    "officialName": "Circuit of the Americas",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackaustindetailed.webp"
+  },
+  "16": {
+    "id": "interlagos",
+    "officialName": "Aut\u00f3dromo Jos\u00e9 Carlos Pace",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackinterlagosdetailed.webp"
+  },
+  "17": {
+    "id": "spielberg",
+    "officialName": "Red Bull Ring",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackspielbergdetailed.webp"
+  },
+  "19": {
+    "id": "mexico-city",
+    "officialName": "Aut\u00f3dromo Hermanos Rodr\u00edguez",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackmexicocitydetailed.webp"
+  },
+  "20": {
+    "id": "baku",
+    "officialName": "Baku City Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackbakudetailed.webp"
+  },
+  "26": {
+    "id": "zandvoort",
+    "officialName": "Circuit Zandvoort",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackzandvoortdetailed.webp"
+  },
+  "27": {
+    "id": "imola",
+    "officialName": "Autodromo Internazionale Enzo e Dino Ferrari",
+    "imageSeason": 2025,
+    "imageUrl": "https://media.formula1.com/image/upload/f_auto,c_limit,q_auto,w_1320/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Emilia_Romagna_Circuit",
+    "timingArtwork": true
+  },
+  "29": {
+    "id": "jeddah",
+    "officialName": "Jeddah Corniche Circuit",
+    "imageSeason": 2025,
+    "imageUrl": "https://media.formula1.com/image/upload/f_auto,c_limit,q_auto,w_1320/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Saudi_Arabia_Circuit",
+    "timingArtwork": true
+  },
+  "30": {
+    "id": "miami",
+    "officialName": "Miami International Autodrome",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackmiamidetailed.webp"
+  },
+  "31": {
+    "id": "las-vegas",
+    "officialName": "Las Vegas Street Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026tracklasvegasdetailed.webp"
+  },
+  "32": {
+    "id": "lusail",
+    "timingArtwork": true,
+    "officialName": "Lusail International Circuit",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026tracklusaildetailed.webp"
+  },
+  "39": {
+    "id": "silverstone",
+    "officialName": "Silverstone Circuit (Reverse)",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026tracksilverstonedetailed.webp",
+    "reverse": true
+  },
+  "40": {
+    "id": "spielberg",
+    "officialName": "Red Bull Ring (Reverse)",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackspielbergdetailed.webp",
+    "reverse": true
+  },
+  "41": {
+    "id": "zandvoort",
+    "officialName": "Circuit Zandvoort (Reverse)",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackzandvoortdetailed.webp",
+    "reverse": true
+  },
+  "42": {
+    "id": "madring",
+    "officialName": "Circuito de Madring",
+    "imageSeason": 2026,
+    "imageUrl": "https://media.formula1.com/image/upload/c_fit,h_704/q_auto/v1740000000/common/f1/2026/track/2026trackmadringdetailed.webp"
+  }
+}

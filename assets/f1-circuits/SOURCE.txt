@@ -1,0 +1,1 @@
+jp-1962.geojson, unmodified from https://github.com/bacinger/f1-circuits/blob/8094e957b8d6aa8b9f4510c93968556cccd30e02/circuits/jp-1962.geojson. See LICENSE.md.
