@@ -1,0 +1,192 @@
+#race-menu {min-width:9rem}
+#race-menu button {display:block;width:100%;text-align:left;padding:.7em .9em}
+#race-menu button:hover,.work-panel button:hover,.strategy-title button:hover {background:#36363f}
+.strategy-title button,.work-panel button,.work-panel input,.work-panel select {
+  padding:.45em .65em;background:#222228;color:inherit;border:1px solid #54545e;border-radius:4px;font:inherit
+}
+.strategy-title button,.work-panel button {cursor:pointer}
+.strategy-title {gap:.5em;flex-wrap:wrap}
+.strategy-title button {margin-left:auto;font-size:clamp(10px,.85vw,17px)}
+.my-race .pace-history {margin-top:1.1vh}
+.pace-history h2 {font-size:clamp(12px,1.2vw,21px)}
+.pace-history small,.work-panel dt {color:#b9bac5}
+.pace-history h2 small {font-size:.62em;font-weight:500}
+.lap-strip {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,6.8em),1fr));margin:.4em 0;gap:.9em}
+.lap-strip div {display:grid;gap:.2em;box-shadow:inset 2px 0 #666}
+.pace-history {font-size:clamp(10px,.77vw,15px);text-align:center}
+.stint-bar {display:flex;min-height:1.6em;gap:2px;margin:.65em 0;font-size:clamp(10px,.78vw,15px)}
+.stint-bar>span {flex-basis:0;overflow:hidden;white-space:nowrap;background:#24252b;border-top:3px solid var(--rubber);padding:.2em 0;text-align:center}
+.weather-call {display:grid;gap:.32em;padding:.65em .8em;margin:.4em 0;background:#1d1d22;border-inline-start:3px solid #5b5b64;font-size:clamp(12px,.85vw,17px);line-height:1.35}
+.weather-call:has(.recommended-stops) {border-color:var(--gold)}
+.weather-call>small:first-child {color:var(--gold)}
+.recommended-stops {display:flex;align-items:center;gap:.25em .55em;flex-wrap:wrap;font-size:clamp(20px,2.9vh,34px)}
+.recommended-stops .next-compound {display:inline-flex;align-items:center;gap:.4em}
+.recommended-stops b+.next-compound {padding-inline-start:.55em;border-inline-start:1px solid #55555f}
+.next-compound .tyre-badge {--tyre-size:1em}
+.recommended-stops>span span {white-space:nowrap}
+.weather-facts {display:flex;flex-wrap:wrap;gap:.25em 1.3em;margin:.2em 0 0}
+.weather-facts dt,.stop-sequence>small {font-size:.83em;color:#bbbcc5}
+.weather-facts dd {margin:.1em 0 0}
+.stop-sequence>span {display:inline-block;white-space:nowrap}
+.stop-sequence>small,.tyre-risk>span {display:block}
+.tyre-risk {color:#ffe69b;line-height:1.3}
+.race-strategy .committed {padding:1vh 0}
+.race-strategy>small,.race-strategy>p {color:#bfc0c9;font-size:clamp(11px,.8vw,16px);line-height:1.45}
+.work-panel {box-sizing:border-box;width:min(860px,96vw);max-height:90dvh;overflow:auto;background:#16171c;color:#eeeef1;border:1px solid #50515c;border-radius:6px;padding:clamp(12px,1.5vw,26px);font-size:clamp(12px,.84vw,16px)}
+.work-panel::backdrop {background:#07080bbf}
+.tool-screen {display:block;overflow:auto}
+.tool-screen .work-panel {width:min(100%,1200px);max-height:none;overflow:visible;margin:0 auto;border:0;background:transparent}
+.tool-screen :is(button,select,input,summary):focus {outline:2px solid var(--gold);outline-offset:2px}
+.settings-heading {display:flex;justify-content:space-between;align-items:center;gap:1em}
+.settings-heading h2 {margin:0}
+@media(min-aspect-ratio:1/1) {
+  header {gap:.45vw;padding-inline:.65vw}
+  header :is(.session,.race-state) {gap:.62vw}
+  header nav {gap:.15vw;font-size:clamp(10px,1vw,24px)}
+  header nav button {padding-inline:.45vw}
+  .session select {max-width:14vw}
+}
+@media(max-width:600px) {
+  header nav {order:1;width:100%;flex-wrap:wrap}
+  header nav button {min-height:30px}
+}
+.panel-heading,.panel-tools {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8em}
+.panel-heading {border-bottom:2px solid #e10600;padding-bottom:.75em}
+.panel-heading h2 {font-size:1.6em}.work-panel h3 {font-size:1.12em;margin:1.25em 0 .6em}
+.work-panel p,.panel-tools {margin:1em 0}.panel-tools>span {color:#c3c4cb}
+.work-panel label {display:inline-flex;align-items:center;flex-wrap:wrap;gap:.5em}
+.work-panel input,.work-panel select {min-width:0;max-width:100%}
+.work-scroll {overflow-x:auto}
+.race-strategy {min-height:0;overflow-y:auto;scrollbar-width:thin}
+.race-strategy>* {flex-shrink:0}
+.strategy-title>span {font-size:clamp(12px,.9vw,18px);color:#c2c3ca}
+.plan-comparison {font-size:clamp(11px,.8vw,16px);margin-top:1vh}
+.plan-comparison .panel-tools {margin:.5em 0}
+.plan-comparison h3 {font-size:1.25em}
+.plan-comparison h3 small {display:block;margin-top:.25em;color:#bfc0c9;font-size:.76em;line-height:1.35}
+.plan-comparison table {width:100%;border-collapse:collapse}
+.plan-table {table-layout:fixed}
+.plan-table>thead>tr>th:not(:first-child),
+.plan-table>tbody>tr:not(.plan-preview)>td:not(:first-child) {text-align:center}
+.plan-table tr.expired-plan {background:#101014;color:#a5a5ab}
+.plan-table .expired-plan :is(.plan-choice,.stop-sequence) {opacity:.48}
+.plan-table .expired-mark {color:#ff5353;font-size:1.65em;vertical-align:middle;line-height:1}
+.plan-table>thead th:nth-child(1) {width:26%}
+.plan-table>thead th:nth-child(2) {width:29%}
+.plan-table>thead th:nth-child(3) {width:17%}
+.plan-table>thead th:nth-child(4) {width:14%}
+.plan-table>tbody>tr:not(.plan-preview)>td:nth-child(2) .schedule-stop {font-size:1.22em}
+.plan-table .plan-choice {display:block;width:100%;text-align:left;line-height:1.2}
+.plan-choice small {display:block;font-size:.85em;color:#c6c7ce}
+.plan-table :is(.finish-range,.pit-window) {white-space:nowrap}
+.plan-table .tyre-risk {word-break:keep-all}
+.risk-fact {display:inline-block}
+.plan-comparison th,.plan-comparison td {text-align:left;padding:.32em .25em;border-bottom:1px solid #393943}
+.plan-comparison th {font-size:.85em;color:#b8bac4}
+.plan-comparison tr[data-active="true"] {background:#26251f;outline:1px solid #c8be95;outline-offset:-1px}
+.plan-comparison button,.plan-comparison select {font:inherit;color:inherit;background:#25252c;border:1px solid #50515a;border-radius:3px;padding:.35em .45em;cursor:pointer}
+.plan-table .plan-choice {border:0;background:transparent;padding:.25em .3em}
+@media(max-width:1400px) {
+  .plan-table .plan-choice {min-height:3.8em}
+}
+.plan-comparison .panel-tools h3 {display:flex;width:100%;gap:.6em;align-items:center;flex-wrap:wrap}
+.plan-comparison .panel-tools h3 small {margin:0}
+@media(max-width:700px) {
+  .plan-table .plan-rec {display:block;margin:0}
+}
+.race-strategy .race-choices {gap:.6vh;padding-top:1vh}
+.race-strategy .race-choices:not(.editing) button {padding:.65vh .85vw}
+.race-strategy .race-choices:not(.editing) button>span {font-size:clamp(14px,1.2vw,24px)}
+@media(max-aspect-ratio:1/1){.race-strategy {overflow:visible}}
+.work-panel table {border-collapse:collapse;width:100%;font-size:.9em}
+.work-panel th,.work-panel td {text-align:left;padding:.6em .45em;border-bottom:1px solid #393943}
+.work-panel th {color:#b8bac4}.work-panel tr[data-active="true"] {background:#343226}
+.metric-list {display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1em;margin:1em 0}
+.metric-list div {padding-left:.7em;border-left:2px solid #555660}
+.metric-list dt {font-size:.8em}.metric-list dd {margin:.35em 0 0}
+.trace-chart {width:100%;height:auto;background:#1b1c22}
+.trace-key b {color:#ffe469}.work-panel .scrubber {display:flex;flex:1}
+.scrubber input {flex:1;accent-color:#e73c43}
+@media(max-aspect-ratio:1/1){.strategy-title button {margin-left:0}.work-panel th,.work-panel td {padding:.55em .3em}.lap-strip {gap:.5em}}
+
+/* A monitor has room for a third column when plan details are expanded. */
+@media (min-aspect-ratio:3/2) {
+  .race-body {position:relative;padding:1.5vh 1.2vw}
+  .race-strategy {overflow:visible}
+  .race-strategy .committed>strong {font-size:3vw}
+  .race-strategy .committed .race-tyre {--tyre-size:3.2vw}
+  .race-strategy .committed {padding:.6vh 0}
+  .race-strategy .strategy-title {padding-bottom:.65vh}
+  .race-strategy .race-choices:not(.editing) button {padding:.4vh .85vw}
+  .race-strategy .panel-tools,.race-strategy .stint-bar {margin:.35em 0}
+  .race-note {min-height:1.4em;padding-top:.3vh}
+
+}
+
+@media (min-aspect-ratio:2/1) {
+  .wheel-dialog {font-size:min(1.55vh,18px);padding:1.7vh}
+  .race-body {grid-template-rows:minmax(0,1fr)}
+  .race-body .tyre-summary .race-tyre {--tyre-size:7.6vh}
+  .race-strategy .strategy-title h2 {font-size:4.2vh}
+  .race-strategy .committed>strong {font-size:5.3vh}
+  .race-strategy .committed .race-tyre {--tyre-size:5.7vh}
+  .race-strategy .race-choices h3 {font-size:3.1vh}
+  .race-strategy .race-choices button b {font-size:2.65vh}
+  .race-strategy .race-choices button small,.race-strategy .race-note,.race-strategy .committed p {font-size:1.85vh}
+  .race-strategy .editing button>span,.race-strategy .editing button b {font-size:2.15vh}
+  .race-strategy .committed h3 {font-size:2.4vh}
+  .race-strategy .weather-call,.race-strategy .plan-actions,.race-strategy .strategy-title>span {font-size:1.65vh}
+  .race-strategy .plan-comparison {font-size:1.45vh}
+}
+
+#root:has(>.replay-tools) {grid-template-rows:clamp(34px,4.8dvh,62px) auto minmax(0,1fr)}
+.replay-tools {margin:0;padding:.4em 1em;background:#19191e;border-bottom:1px solid #45454d}
+.replay-tools input {min-width:4em;flex:1;accent-color:var(--red)}
+.pit-results {padding:.65em 0}
+.pit-results table {width:100%;border-collapse:collapse;text-align:left}
+.pit-results :is(th,td) {padding:.35em .5em;border-bottom:1px solid #37373d}
+.pit-results th {color:var(--muted);font-size:.85em}
+.pit-review-findings {padding:.55em .5em 1em}
+.pit-review-findings ul {margin:0;padding-inline-start:1.2em}
+.pit-review-findings p {margin:.4em 0 0;color:var(--muted)}
+.my-race .pit-results {font-size:clamp(11px,.9vw,18px);max-height:18vh;overflow:auto}
+.my-race .pit-results h3 {font-size:1.1em}
+
+.plan-comparison thead {background:#24242a}
+.race-strategy .codex-actions button {font:inherit;color:inherit;background:#26262c;border:1px solid #54545e;border-radius:3px;padding:.35em .6em;cursor:pointer}
+.race-strategy .codex-actions {font-size:clamp(12px,.85vw,17px);margin:.35em 0}
+.race-note:empty {display:none}
+@media (min-aspect-ratio:3/2) {
+  .race-strategy .race-choices:not(.editing) {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4vw}
+  .race-strategy .race-choices:not(.editing):has(>button:nth-of-type(2):last-child),
+  .race-strategy .race-choices.editing {display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .race-strategy .race-choices.editing {gap:.35em}
+  .race-choices.editing>:is(h3,.rejoin),.race-choices.editing[data-grid="true"]>button:first-of-type {grid-column:1/-1}
+  .race-strategy .editing button>span,.race-strategy .editing button b {font-size:clamp(12px,.95vw,19px)}
+  .race-choices:not(.editing)>:is(h3,p) {grid-column:1/-1}
+  .race-strategy .race-choices:not(.editing) button {padding:.5em .6em;align-self:stretch}
+  .race-strategy .race-choices:not(.editing) button>span {flex-direction:column;align-items:flex-start;gap:.25em;font-size:clamp(12px,.96vw,19px)}
+  .race-strategy .race-choices:not(.editing) button b {font-size:1em}
+  .race-strategy .race-choices:not(.editing) button small {font-size:clamp(11px,.78vw,15px);line-height:1.35}
+  .race-strategy .committed {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.2em .6em}
+  .race-strategy .committed>strong {grid-column:2;grid-row:1/3;font-size:clamp(16px,1.5vw,30px);margin:0}
+  .race-strategy .committed>strong .race-tyre {--tyre-size:1.6em;font-size:1em}
+  .race-strategy .committed p {margin:0;font-size:clamp(11px,.8vw,16px)}
+  .race-strategy .committed .stint-bar {grid-column:1/-1}
+}
+@media (min-aspect-ratio:3/2) and (max-height:800px) {
+  .race-strategy .strategy-title h2,.race-strategy .race-choices h3 {font-size:clamp(16px,2.7vh,22px)}
+  .race-strategy .weather-call {margin:.2em 0;padding:.35em .65em;gap:.15em}
+  .race-strategy .plan-comparison {margin-top:.35vh}
+  .race-strategy .plan-comparison :is(th,td) {padding-block:.18em}
+  .race-strategy .race-choices {padding-top:.35vh}
+  .race-strategy .plan-actions {margin-top:.35vh}
+}
+
+.race-strategy .plan-comparison .panel-tools h3 {font-size:clamp(18px,2.3vh,28px);line-height:1.1}
+.race-strategy .plan-comparison .panel-tools h3 small {font-size:.55em}
+.plan-comparison .panel-tools .lap-reference {font-size:clamp(12px,.95vw,16px)}
+.stop-sequence .schedule-stop {display:inline-flex;align-items:center;vertical-align:middle;white-space:nowrap}
+.schedule-stop>.schedule-lap {margin-right:.28em}
+.schedule-stop .schedule-arrow {margin-inline:.5em}
+.schedule-stop svg,.tyre-risk svg {flex:none;vertical-align:middle}

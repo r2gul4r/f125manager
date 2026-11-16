@@ -1,0 +1,38 @@
+export const nav = {
+  brandTitle: 'F1 Telemetry',
+  brandTag: '',
+  brandSub: 'EA F1 2025 / 2026 DLC',
+  tabs: {
+    history: 'Session History',
+    comparator: 'Lap Comparator',
+    progress: 'Progress',
+    live: 'Live Session',
+  },
+  /** On narrow screens */
+  tabsShort: {
+    history: 'History',
+    comparator: 'Compare',
+    progress: 'Progress',
+    live: 'Live',
+  },
+  liveBadge: 'LIVE',
+  portBadge: 'PORT',
+  language: 'Language',
+  mainNavigation: 'Main Navigation',
+  selectLanguage: 'Select Language',
+  availableLanguages: 'Available Languages',
+  version: 'Version',
+  currentVersion: 'Current Version',
+  aboutApp: 'About & Version Details',
+  updateAvailable: 'Update Available',
+  whatsNew: "What's New",
+  checkUpdates: 'Check for Updates',
+  performanceMode: {
+    label: 'Performance mode',
+    on: 'on',
+    off: 'off',
+    hint: 'Solid panels with no glow or animation, for a slow device or a screen you read at a glance.',
+    driverScope: 'Saved for the Driver view on this device (on by default).',
+    generalScope: 'Saved for every page but the Driver view on this device.',
+  },
+};

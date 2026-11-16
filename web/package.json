@@ -1,0 +1,26 @@
+{
+  "name": "f125manager-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src --ignore-pattern src/vendor",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "lucide-react": "1.24.0",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "vite": "8.1.1",
+    "typescript": "6.0.2",
+    "oxlint": "1.71.0"
+  }
+}
+

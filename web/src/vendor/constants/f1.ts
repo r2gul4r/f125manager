@@ -1,0 +1,1018 @@
+import { cssVar } from '../styles/theme';
+
+export const PACKET_IDS = {
+  MOTION: 0,
+  SESSION: 1,
+  LAP_DATA: 2,
+  EVENT: 3,
+  PARTICIPANTS: 4,
+  CAR_SETUP: 5,
+  CAR_TELEMETRY: 6,
+  CAR_STATUS: 7,
+  FINAL_CLASSIFICATION: 8,
+  LOBBY_INFO: 9,
+  CAR_DAMAGE: 10,
+  SESSION_HISTORY: 11,
+  TYRE_SETS: 12,
+  MOTION_EX: 13,
+  TIME_TRIAL: 14,
+  LAP_POSITIONS: 15,
+  CAR_TELEMETRY_2: 16,
+  LIVE_SNAPSHOT: 255,
+} as const;
+
+/**
+ * Indices into the packets' wheel arrays (tyre wear, temperatures, pressures, brakes, damage),
+ * which the UDP specification orders RL, RR, FL, FR.
+ */
+export const WHEEL_INDEX = {
+  REAR_LEFT: 0,
+  REAR_RIGHT: 1,
+  FRONT_LEFT: 2,
+  FRONT_RIGHT: 3,
+} as const;
+
+/** The wheels in reading order, front axle first, with the label shown for each. */
+export const WHEELS_FRONT_FIRST = [
+  { key: 'fl', label: 'FL', index: WHEEL_INDEX.FRONT_LEFT },
+  { key: 'fr', label: 'FR', index: WHEEL_INDEX.FRONT_RIGHT },
+  { key: 'rl', label: 'RL', index: WHEEL_INDEX.REAR_LEFT },
+  { key: 'rr', label: 'RR', index: WHEEL_INDEX.REAR_RIGHT },
+] as const;
+
+export const TYRE_COMPOUND_IDS = {
+  INTERMEDIATE: 7,
+  WET: 8,
+  SOFT: 16,
+  MEDIUM: 17,
+  HARD: 18,
+  SUPER_SOFT: 19,
+  CLASSIC_SOFT: 20,
+  CLASSIC_MEDIUM: 21,
+  CLASSIC_HARD: 22,
+} as const;
+
+export const SAFETY_CAR_STATUS = {
+  CLEAR: 0,
+  FULL: 1,
+  VIRTUAL: 2,
+  FORMATION_LAP: 3,
+} as const;
+
+/** The flag a car is shown (CarStatus VehicleFIAFlags). */
+export const VEHICLE_FIA_FLAGS = {
+  INVALID: -1,
+  NONE: 0,
+  GREEN: 1,
+  BLUE: 2,
+  YELLOW: 3,
+} as const;
+
+export const DRS_DISABLED_REASONS = {
+  SURFACE_CONDITIONS: 0,
+  SAFETY_CAR: 1,
+  RED_FLAG: 2,
+  MIN_LAP_NOT_REACHED: 3,
+} as const;
+
+export const ERS_DEPLOY_MODE_IDS = {
+  NONE: 0,
+  MEDIUM: 1,
+  HOTLAP: 2,
+  OVERTAKE: 3,
+} as const;
+
+export const RESULT_STATUS = {
+  INVALID: 0,
+  INACTIVE: 1,
+  ACTIVE: 2,
+  FINISHED: 3,
+  DNF: 4,
+  DSQ: 5,
+  NOT_CLASSIFIED: 6,
+  RETIRED: 7,
+} as const;
+
+export const RESULT_REASONS = {
+  INVALID: 0,
+  RETIRED: 1,
+  FINISHED: 2,
+  TERMINAL_DAMAGE: 3,
+  INACTIVE: 4,
+  NOT_ENOUGH_LAPS: 5,
+  BLACK_FLAGGED: 6,
+  RED_FLAGGED: 7,
+  MECHANICAL_FAILURE: 8,
+  SESSION_SKIPPED: 9,
+  SESSION_SIMULATED: 10,
+} as const;
+
+export const PIT_STATUS = {
+  NONE: 0,
+  PITTING: 1,
+  IN_PIT_AREA: 2,
+} as const;
+
+export const DRIVER_STATUS = {
+  IN_GARAGE: 0,
+  FLYING_LAP: 1,
+  IN_LAP: 2,
+  OUT_LAP: 3,
+  ON_TRACK: 4,
+} as const;
+
+export const PENALTY_TYPES = {
+  DRIVE_THROUGH: 0,
+  STOP_GO: 1,
+  GRID_PENALTY: 2,
+  PENALTY_REMINDER: 3,
+  TIME_PENALTY: 4,
+  WARNING: 5,
+  DISQUALIFIED: 6,
+  REMOVED_FORMATION: 7,
+  PARKED_TOO_LONG: 8,
+  TYRE_REGULATIONS: 9,
+  LAP_INVALIDATED_MIN: 10,
+  LAP_INVALIDATED_MAX: 15,
+  RETIRED: 16,
+  BLACK_FLAG_TIMER: 17,
+} as const;
+
+export const WEATHER_CODES = {
+  CLEAR: 0,
+  LIGHT_CLOUD: 1,
+  OVERCAST: 2,
+  LIGHT_RAIN: 3,
+  HEAVY_RAIN: 4,
+  STORM: 5,
+} as const;
+
+export const SESSION_TYPES = {
+  UNKNOWN: 0,
+  P1: 1,
+  P2: 2,
+  P3: 3,
+  SHORT_P: 4,
+  Q1: 5,
+  Q2: 6,
+  Q3: 7,
+  SHORT_Q: 8,
+  OSQ: 9,
+  SPRINT_Q1: 10,
+  SPRINT_Q2: 11,
+  SPRINT_Q3: 12,
+  SHORT_SPRINT_Q: 13,
+  OS_SPRINT_Q: 14,
+  RACE: 15,
+  RACE_2: 16,
+  RACE_3: 17,
+  TIME_TRIAL: 18,
+  SPRINT_RACE: 19,
+  EQUAL_SPRINT_RACE: 20,
+} as const;
+
+export const isQualifyingSession = (sessionType?: number): boolean => {
+  if (sessionType === undefined || sessionType === null) return false;
+  return (
+    sessionType === SESSION_TYPES.Q1 ||
+    sessionType === SESSION_TYPES.Q2 ||
+    sessionType === SESSION_TYPES.Q3 ||
+    sessionType === SESSION_TYPES.SHORT_Q ||
+    sessionType === SESSION_TYPES.OSQ ||
+    sessionType === SESSION_TYPES.SPRINT_Q1 ||
+    sessionType === SESSION_TYPES.SPRINT_Q2 ||
+    sessionType === SESSION_TYPES.SPRINT_Q3 ||
+    sessionType === SESSION_TYPES.SHORT_SPRINT_Q ||
+    sessionType === SESSION_TYPES.OS_SPRINT_Q
+  );
+};
+
+/** Cars that make it to Q3 (and the Sprint Shootout's SQ3), whatever the grid size. */
+export const QUALIFYING_FINAL_SEGMENT_CARS = 10;
+
+/**
+ * Last position that survives the current qualifying segment, or null when nobody is knocked out
+ * (Q3, single-session formats, races). Q3 always has ten cars and Q1 and Q2 knock out half of the
+ * rest each: P16 and P11 on a 20-car grid, P17 and P11 on 22 cars.
+ */
+export const getQualifyingCutoffPosition = (sessionType: number | undefined, carCount: number): number | null => {
+  let cutoff: number | null = null;
+  if (sessionType === SESSION_TYPES.Q1 || sessionType === SESSION_TYPES.SPRINT_Q1) {
+    cutoff = QUALIFYING_FINAL_SEGMENT_CARS + Math.floor((carCount - QUALIFYING_FINAL_SEGMENT_CARS) / 2);
+  } else if (sessionType === SESSION_TYPES.Q2 || sessionType === SESSION_TYPES.SPRINT_Q2) {
+    cutoff = QUALIFYING_FINAL_SEGMENT_CARS;
+  }
+  return cutoff !== null && cutoff < carCount ? cutoff : null;
+};
+
+export const isPracticeSession = (sessionType?: number): boolean => {
+  if (sessionType === undefined || sessionType === null) return false;
+  return (
+    sessionType === SESSION_TYPES.P1 ||
+    sessionType === SESSION_TYPES.P2 ||
+    sessionType === SESSION_TYPES.P3 ||
+    sessionType === SESSION_TYPES.SHORT_P
+  );
+};
+
+export const isRaceSession = (sessionType?: number): boolean => {
+  if (sessionType === undefined || sessionType === null) return false;
+  return (
+    sessionType === SESSION_TYPES.RACE ||
+    sessionType === SESSION_TYPES.RACE_2 ||
+    sessionType === SESSION_TYPES.RACE_3 ||
+    sessionType === SESSION_TYPES.SPRINT_RACE ||
+    sessionType === SESSION_TYPES.EQUAL_SPRINT_RACE
+  );
+};
+
+/** Session names exactly as the server stores them (packets.SessionTypeName), for session badges. */
+export const SESSION_TYPE_LABELS: Record<number, string> = {
+  [SESSION_TYPES.P1]: 'Practice 1',
+  [SESSION_TYPES.P2]: 'Practice 2',
+  [SESSION_TYPES.P3]: 'Practice 3',
+  [SESSION_TYPES.SHORT_P]: 'Short Practice',
+  [SESSION_TYPES.Q1]: 'Qualifying 1',
+  [SESSION_TYPES.Q2]: 'Qualifying 2',
+  [SESSION_TYPES.Q3]: 'Qualifying 3',
+  [SESSION_TYPES.SHORT_Q]: 'Short Qualifying',
+  [SESSION_TYPES.OSQ]: 'One-Shot Qualifying',
+  [SESSION_TYPES.SPRINT_Q1]: 'Sprint Shootout 1',
+  [SESSION_TYPES.SPRINT_Q2]: 'Sprint Shootout 2',
+  [SESSION_TYPES.SPRINT_Q3]: 'Sprint Shootout 3',
+  [SESSION_TYPES.SHORT_SPRINT_Q]: 'Short Sprint Shootout',
+  [SESSION_TYPES.OS_SPRINT_Q]: 'One-Shot Sprint Shootout',
+  [SESSION_TYPES.RACE]: 'Race',
+  [SESSION_TYPES.RACE_2]: 'Race 2',
+  [SESSION_TYPES.RACE_3]: 'Race 3',
+  [SESSION_TYPES.TIME_TRIAL]: 'Time Trial',
+  [SESSION_TYPES.SPRINT_RACE]: 'Sprint Race',
+  [SESSION_TYPES.EQUAL_SPRINT_RACE]: 'Equal Sprint Race',
+};
+
+/** Each session type's key under `common.sessionTypes` in the locales. */
+export const SESSION_TYPE_KEYS: Record<number, string> = {
+  [SESSION_TYPES.P1]: 'p1',
+  [SESSION_TYPES.P2]: 'p2',
+  [SESSION_TYPES.P3]: 'p3',
+  [SESSION_TYPES.SHORT_P]: 'shortPractice',
+  [SESSION_TYPES.Q1]: 'q1',
+  [SESSION_TYPES.Q2]: 'q2',
+  [SESSION_TYPES.Q3]: 'q3',
+  [SESSION_TYPES.SHORT_Q]: 'shortQualifying',
+  [SESSION_TYPES.OSQ]: 'oneShotQualifying',
+  [SESSION_TYPES.SPRINT_Q1]: 'sprintShootout1',
+  [SESSION_TYPES.SPRINT_Q2]: 'sprintShootout2',
+  [SESSION_TYPES.SPRINT_Q3]: 'sprintShootout3',
+  [SESSION_TYPES.SHORT_SPRINT_Q]: 'shortSprintShootout',
+  [SESSION_TYPES.OS_SPRINT_Q]: 'oneShotSprintShootout',
+  [SESSION_TYPES.RACE]: 'race',
+  [SESSION_TYPES.RACE_2]: 'race2',
+  [SESSION_TYPES.RACE_3]: 'race3',
+  [SESSION_TYPES.TIME_TRIAL]: 'timeTrial',
+  [SESSION_TYPES.SPRINT_RACE]: 'sprintRace',
+  [SESSION_TYPES.EQUAL_SPRINT_RACE]: 'equalSprintRace',
+};
+
+export const getSessionTypeCode = (sessionTypeStr?: string): number => {
+  if (!sessionTypeStr) return SESSION_TYPES.UNKNOWN;
+  const s = sessionTypeStr.trim().toLowerCase();
+  if (s.includes('sprint shootout 1') || s.includes('sprint q1') || s === 'sq1') return SESSION_TYPES.SPRINT_Q1;
+  if (s.includes('sprint shootout 2') || s.includes('sprint q2') || s === 'sq2') return SESSION_TYPES.SPRINT_Q2;
+  if (s.includes('sprint shootout 3') || s.includes('sprint q3') || s === 'sq3') return SESSION_TYPES.SPRINT_Q3;
+  if (s.includes('short sprint')) return SESSION_TYPES.SHORT_SPRINT_Q;
+  if (s.includes('one-shot sprint') || s.includes('os sprint')) return SESSION_TYPES.OS_SPRINT_Q;
+  if (s.includes('sprint race') || s === 'sprint') return SESSION_TYPES.SPRINT_RACE;
+  if (s.includes('equal sprint')) return SESSION_TYPES.EQUAL_SPRINT_RACE;
+  if (s.includes('qualifying 1') || s === 'q1') return SESSION_TYPES.Q1;
+  if (s.includes('qualifying 2') || s === 'q2') return SESSION_TYPES.Q2;
+  if (s.includes('qualifying 3') || s === 'q3') return SESSION_TYPES.Q3;
+  if (s.includes('short qualifying') || s.includes('short q')) return SESSION_TYPES.SHORT_Q;
+  if (s.includes('one-shot qualifying') || s.includes('osq')) return SESSION_TYPES.OSQ;
+  if (s.includes('practice 1') || s === 'fp1' || s === 'p1') return SESSION_TYPES.P1;
+  if (s.includes('practice 2') || s === 'fp2' || s === 'p2') return SESSION_TYPES.P2;
+  if (s.includes('practice 3') || s === 'fp3' || s === 'p3') return SESSION_TYPES.P3;
+  if (s.includes('short practice') || s.includes('short p')) return SESSION_TYPES.SHORT_P;
+  if (s.includes('time trial')) return SESSION_TYPES.TIME_TRIAL;
+  if (s.includes('race 2')) return SESSION_TYPES.RACE_2;
+  if (s.includes('race 3')) return SESSION_TYPES.RACE_3;
+  if (s.includes('race')) return SESSION_TYPES.RACE;
+  return SESSION_TYPES.UNKNOWN;
+};
+
+export const TIME_CONSTANTS = {
+  MS_PER_SECOND: 1000,
+  MS_PER_MINUTE: 60000,
+  MS_PER_HOUR: 3600000,
+  SECONDS_PER_MINUTE: 60,
+} as const;
+
+export const ACTIVE_AERO_MODES = {
+  CORNER: 0,
+  STRAIGHT: 1,
+} as const;
+
+/** Sessions whose participants and laps the client keeps (utils/sessionDataCache.ts); about 0.6 MB each for a full race. */
+export const SESSION_DATA_CACHE_LIMIT = 8;
+
+export const F1_FORMATS = {
+  FORMAT_2025: 2025,
+  FORMAT_2026: 2026,
+} as const;
+
+export const GRID_LIMITS = {
+  MAX_CARS_2025: 22,
+  MAX_CARS_2026: 24,
+  MAX_GRID_CARS: 24,
+} as const;
+
+export const TEAM_COLORS: Record<number, string> = {
+  0: '#00D2BE', // Mercedes-AMG Petronas
+  1: '#DC0000', // Scuderia Ferrari HP
+  2: '#3671C6', // Oracle Red Bull Racing
+  3: '#64C4FF', // Williams Racing
+  4: '#229971', // Aston Martin Aramco
+  5: '#0090FF', // BWT Alpine
+  6: '#6692FF', // Visa Cash App RB
+  7: '#6CD3BF', // MoneyGram Haas F1 Team
+  8: '#FF8000', // McLaren
+  9: '#002B30', // Stake F1 Team Kick Sauber
+  // 2026 Teams
+  476: '#00D2BE', // Mercedes '26
+  477: '#DC0000', // Ferrari '26
+  478: '#3671C6', // Red Bull Racing '26
+  479: '#64C4FF', // Williams '26
+  480: '#229971', // Aston Martin '26
+  481: '#0090FF', // Alpine '26
+  482: '#6692FF', // RB '26
+  483: '#6CD3BF', // Haas '26
+  484: '#FF8000', // McLaren '26
+  485: '#C0C0C0', // Audi '26
+  486: '#D4AF37', // Cadillac '26
+};
+
+export interface TyreCompoundStyle {
+  label: string;
+  color: string;
+  bg: string;
+}
+
+/** Badge letter and colours of each visual compound; the colours are the --f1-compound-* tokens. */
+export const TYRE_COMPOUNDS: Record<number, TyreCompoundStyle> = {
+  [TYRE_COMPOUND_IDS.SOFT]: { label: 'S', color: cssVar('--f1-compound-soft'), bg: cssVar('--f1-compound-soft-bg') }, // Soft (C5/C4/C3)
+  [TYRE_COMPOUND_IDS.MEDIUM]: { label: 'M', color: cssVar('--f1-compound-medium'), bg: cssVar('--f1-compound-medium-bg') },
+  [TYRE_COMPOUND_IDS.HARD]: { label: 'H', color: cssVar('--f1-compound-hard'), bg: cssVar('--f1-compound-hard-bg') },
+  [TYRE_COMPOUND_IDS.INTERMEDIATE]: { label: 'I', color: cssVar('--f1-compound-inter'), bg: cssVar('--f1-compound-inter-bg') },
+  [TYRE_COMPOUND_IDS.WET]: { label: 'W', color: cssVar('--f1-compound-wet'), bg: cssVar('--f1-compound-wet-bg') },
+};
+
+export const UNKNOWN_COMPOUND_COLOR = cssVar('--f1-compound-unknown');
+
+/**
+ * The visual compound ID of a packet value (16, "16") or a stored name ("Soft", "MED", "I"),
+ * or undefined when it isn't one of the five dry and wet compounds.
+ */
+export const getVisualCompoundId = (compound?: string | number | null): number | undefined => {
+  if (compound === undefined || compound === null || compound === '') return undefined;
+  const str = String(compound).toUpperCase().trim();
+  if (str === String(TYRE_COMPOUND_IDS.INTERMEDIATE) || str.includes('INTER') || str === 'I') return TYRE_COMPOUND_IDS.INTERMEDIATE;
+  if (str === String(TYRE_COMPOUND_IDS.SOFT) || str.includes('SOFT') || str === 'S') return TYRE_COMPOUND_IDS.SOFT;
+  if (str === String(TYRE_COMPOUND_IDS.MEDIUM) || str.includes('MEDIUM') || str === 'MED' || str === 'M') return TYRE_COMPOUND_IDS.MEDIUM;
+  if (str === String(TYRE_COMPOUND_IDS.HARD) || str.includes('HARD') || str === 'H') return TYRE_COMPOUND_IDS.HARD;
+  if (str === String(TYRE_COMPOUND_IDS.WET) || str.includes('WET') || str === 'W') return TYRE_COMPOUND_IDS.WET;
+  return undefined;
+};
+
+/** A team's colour, or the --f1-team-fallback token for a team this table doesn't list. */
+export const getTeamColor = (teamId?: number | null): string =>
+  (teamId !== undefined && teamId !== null && TEAM_COLORS[teamId]) || cssVar('--f1-team-fallback');
+
+export const ERS_DEPLOY_MODES: Record<number, string> = {
+  0: 'NONE',
+  1: 'MEDIUM',
+  2: 'HOTLAP',
+  3: 'BOOST',
+};
+
+export const ERS_MODE_NAMES: Record<number, string> = {
+  0: 'Off',
+  1: 'Medium',
+  2: 'Hotlap',
+  3: 'Boost',
+};
+
+export const getErsModeName = (mode: number, format?: number | null): string => {
+  if (mode === 3) {
+    return format === F1_FORMATS.FORMAT_2025 ? 'Overtake' : 'Boost';
+  }
+  return ERS_MODE_NAMES[mode] || `Mode ${mode}`;
+};
+
+export const F1_DRIVER_NAMES: Record<number, string> = {
+  0: 'Carlos Sainz',
+  2: 'Daniel Ricciardo',
+  3: 'Fernando Alonso',
+  4: 'Felipe Massa',
+  7: 'Lewis Hamilton',
+  9: 'Max Verstappen',
+  10: 'Nico Hülkenberg',
+  11: 'Kevin Magnussen',
+  14: 'Sergio Pérez',
+  15: 'Valtteri Bottas',
+  17: 'Esteban Ocon',
+  19: 'Lance Stroll',
+  22: 'Charles Leclerc',
+  50: 'George Russell',
+  54: 'Lando Norris',
+  58: 'Charles Leclerc',
+  59: 'Pierre Gasly',
+  62: 'Alexander Albon',
+  80: 'Guanyu Zhou',
+  90: 'Michael Schumacher',
+  94: 'Yuki Tsunoda',
+  102: 'Aidan Jackson',
+  109: 'Jenson Button',
+  110: 'David Coulthard',
+  112: 'Oscar Piastri',
+  113: 'Liam Lawson',
+  116: 'Richard Verschoor',
+  123: 'Enzo Fittipaldi',
+  125: 'Mark Webber',
+  126: 'Jacques Villeneuve',
+  132: 'Logan Sargeant',
+  136: 'Jack Doohan',
+  145: 'Zane Maloney',
+  146: 'Victor Martins',
+  147: 'Oliver Bearman',
+  148: 'Jak Crawford',
+  149: 'Isack Hadjar',
+  152: 'Roman Stanek',
+  153: 'Kush Maini',
+  156: 'Brendon Leigh',
+  157: 'David Tonizza',
+  158: 'Jarno Opmeer',
+  159: 'Lucas Blakeley',
+  160: 'Paul Aron',
+  161: 'Gabriel Bortoleto',
+  162: 'Franco Colapinto',
+  163: 'Taylor Barnard',
+  164: 'Joshua Dürksen',
+  165: 'Andrea-Kimi Antonelli',
+  166: 'Ritomo Miyata',
+  167: 'Rafael Villagómez',
+  168: 'Zak O’Sullivan',
+  169: 'Pepe Martí',
+  170: 'Sonny Hayes',
+};
+
+export const WEATHER_TYPES: Record<number, string> = {
+  [WEATHER_CODES.CLEAR]: 'Clear',
+  [WEATHER_CODES.LIGHT_CLOUD]: 'Light Cloud',
+  [WEATHER_CODES.OVERCAST]: 'Overcast',
+  [WEATHER_CODES.LIGHT_RAIN]: 'Light Rain',
+  [WEATHER_CODES.HEAVY_RAIN]: 'Heavy Rain',
+  [WEATHER_CODES.STORM]: 'Storm',
+};
+
+/** Translation key of each weather code's display name. */
+export const WEATHER_LABEL_KEYS: Record<number, string> = {
+  [WEATHER_CODES.CLEAR]: 'live.weatherClearSunny',
+  [WEATHER_CODES.LIGHT_CLOUD]: 'live.weatherLightCloud',
+  [WEATHER_CODES.OVERCAST]: 'live.weatherOvercast',
+  [WEATHER_CODES.LIGHT_RAIN]: 'live.weatherLightRain',
+  [WEATHER_CODES.HEAVY_RAIN]: 'live.weatherHeavyRain',
+  [WEATHER_CODES.STORM]: 'live.weatherStorm',
+};
+
+export interface TrackInfo {
+  id: number;
+  name: string;
+  countryCode: string;
+  countryKey: string;
+  countryIso3: string;
+  aliases?: string[];
+}
+
+export const TRACK_METADATA: Record<number, TrackInfo> = {
+  0: { id: 0, name: 'Melbourne', countryCode: 'au', countryKey: 'au', countryIso3: 'AUS', aliases: ['albert park', 'australia'] },
+  1: { id: 1, name: 'Paul Ricard', countryCode: 'fr', countryKey: 'fr', countryIso3: 'FRA', aliases: ['le castellet', 'france'] },
+  2: { id: 2, name: 'Shanghai', countryCode: 'cn', countryKey: 'cn', countryIso3: 'CHN', aliases: ['china', 'shanghai international circuit'] },
+  3: { id: 3, name: 'Sakhir (Bahrain)', countryCode: 'bh', countryKey: 'bh', countryIso3: 'BHR', aliases: ['bahrain', 'sakhir', 'bahrain international circuit'] },
+  4: { id: 4, name: 'Catalunya', countryCode: 'es', countryKey: 'es', countryIso3: 'ESP', aliases: ['barcelona', 'spain', 'circuit de barcelona-catalunya'] },
+  5: { id: 5, name: 'Monaco', countryCode: 'mc', countryKey: 'mc', countryIso3: 'MCO', aliases: ['monte carlo', 'circuit de monaco'] },
+  6: { id: 6, name: 'Montreal', countryCode: 'ca', countryKey: 'ca', countryIso3: 'CAN', aliases: ['canada', 'gilles villeneuve', 'circuit gilles villeneuve'] },
+  7: { id: 7, name: 'Silverstone', countryCode: 'gb', countryKey: 'gb', countryIso3: 'GBR', aliases: ['great britain', 'uk', 'united kingdom'] },
+  8: { id: 8, name: 'Hockenheim', countryCode: 'de', countryKey: 'de', countryIso3: 'DEU', aliases: ['germany', 'hockenheimring'] },
+  9: { id: 9, name: 'Hungaroring', countryCode: 'hu', countryKey: 'hu', countryIso3: 'HUN', aliases: ['hungary', 'budapest'] },
+  10: { id: 10, name: 'Spa-Francorchamps', countryCode: 'be', countryKey: 'be', countryIso3: 'BEL', aliases: ['spa', 'belgium', 'circuit de spa-francorchamps'] },
+  11: { id: 11, name: 'Monza', countryCode: 'it', countryKey: 'it', countryIso3: 'ITA', aliases: ['autodromo nazionale monza', 'italy'] },
+  12: { id: 12, name: 'Singapore', countryCode: 'sg', countryKey: 'sg', countryIso3: 'SGP', aliases: ['marina bay', 'marina bay street circuit'] },
+  13: { id: 13, name: 'Suzuka', countryCode: 'jp', countryKey: 'jp', countryIso3: 'JPN', aliases: ['japan', 'suzuka international racing course'] },
+  14: { id: 14, name: 'Abu Dhabi', countryCode: 'ae', countryKey: 'ae', countryIso3: 'ARE', aliases: ['yas marina', 'uae', 'united arab emirates'] },
+  15: { id: 15, name: 'Texas (COTA)', countryCode: 'us', countryKey: 'us', countryIso3: 'USA', aliases: ['austin', 'texas', 'cota', 'circuit of the americas', 'united states', 'usa'] },
+  16: { id: 16, name: 'Interlagos', countryCode: 'br', countryKey: 'br', countryIso3: 'BRA', aliases: ['brazil', 'são paulo', 'sao paulo', 'autódromo josé carlos pace'] },
+  17: { id: 17, name: 'Red Bull Ring', countryCode: 'at', countryKey: 'at', countryIso3: 'AUT', aliases: ['austria', 'spielberg', 'österreichring'] },
+  18: { id: 18, name: 'Sochi', countryCode: 'ru', countryKey: 'ru', countryIso3: 'RUS', aliases: ['russia', 'sochi autodrom'] },
+  19: { id: 19, name: 'Mexico City', countryCode: 'mx', countryKey: 'mx', countryIso3: 'MEX', aliases: ['mexico', 'autódromo hermanos rodríguez', 'hermanos rodriguez'] },
+  20: { id: 20, name: 'Baku (Azerbaijan)', countryCode: 'az', countryKey: 'az', countryIso3: 'AZE', aliases: ['baku', 'azerbaijan', 'baku city circuit'] },
+  21: { id: 21, name: 'Sakhir Short', countryCode: 'bh', countryKey: 'bh', countryIso3: 'BHR', aliases: ['bahrain short', 'sakhir outer'] },
+  22: { id: 22, name: 'Silverstone Short', countryCode: 'gb', countryKey: 'gb', countryIso3: 'GBR', aliases: ['silverstone national'] },
+  23: { id: 23, name: 'Texas Short', countryCode: 'us', countryKey: 'us', countryIso3: 'USA', aliases: ['austin short', 'cota short'] },
+  24: { id: 24, name: 'Suzuka Short', countryCode: 'jp', countryKey: 'jp', countryIso3: 'JPN', aliases: ['suzuka east'] },
+  25: { id: 25, name: 'Hanoi', countryCode: 'vn', countryKey: 'vn', countryIso3: 'VNM', aliases: ['vietnam', 'hanoi street circuit'] },
+  26: { id: 26, name: 'Zandvoort', countryCode: 'nl', countryKey: 'nl', countryIso3: 'NLD', aliases: ['netherlands', 'dutch', 'circuit zandvoort'] },
+  27: { id: 27, name: 'Imola', countryCode: 'it', countryKey: 'it', countryIso3: 'ITA', aliases: ['emilia romagna', 'autodromo enzo e dino ferrari', 'san marino'] },
+  28: { id: 28, name: 'Portimão', countryCode: 'pt', countryKey: 'pt', countryIso3: 'PRT', aliases: ['portimao', 'portugal', 'algarve'] },
+  29: { id: 29, name: 'Jeddah', countryCode: 'sa', countryKey: 'sa', countryIso3: 'SAU', aliases: ['saudi arabia', 'jeddah cornice', 'jeddah corniche'] },
+  30: { id: 30, name: 'Miami', countryCode: 'us', countryKey: 'us', countryIso3: 'USA', aliases: ['miami international autodrome'] },
+  31: { id: 31, name: 'Las Vegas', countryCode: 'us', countryKey: 'us', countryIso3: 'USA', aliases: ['las vegas street circuit', 'vegas'] },
+  32: { id: 32, name: 'Losail', countryCode: 'qa', countryKey: 'qa', countryIso3: 'QAT', aliases: ['lusail', 'qatar', 'losail international circuit'] },
+  33: { id: 33, name: 'Lusail', countryCode: 'qa', countryKey: 'qa', countryIso3: 'QAT', aliases: ['losail', 'qatar'] },
+  39: { id: 39, name: 'Silverstone (Reverse)', countryCode: 'gb', countryKey: 'gb', countryIso3: 'GBR', aliases: ['silverstone reverse'] },
+  40: { id: 40, name: 'Austria (Reverse)', countryCode: 'at', countryKey: 'at', countryIso3: 'AUT', aliases: ['red bull ring reverse', 'austria reverse'] },
+  41: { id: 41, name: 'Zandvoort (Reverse)', countryCode: 'nl', countryKey: 'nl', countryIso3: 'NLD', aliases: ['zandvoort reverse'] },
+  42: { id: 42, name: 'Madrid', countryCode: 'es', countryKey: 'es', countryIso3: 'ESP', aliases: ['madrid circuit', 'spain madrid'] },
+};
+
+export const TRACK_NAMES: Record<number, string> = Object.fromEntries(
+  Object.entries(TRACK_METADATA).map(([id, info]) => [Number(id), info.name])
+);
+
+export const getTrackInfo = (trackIdOrName?: number | string | null): TrackInfo | null => {
+  if (trackIdOrName === undefined || trackIdOrName === null) return null;
+
+  if (typeof trackIdOrName === 'number') {
+    return TRACK_METADATA[trackIdOrName] || null;
+  }
+
+  const trimmed = trackIdOrName.trim().toLowerCase();
+  if (!trimmed) return null;
+
+  // 1. Direct name match or ID string match
+  const numericId = Number(trimmed);
+  if (!isNaN(numericId) && TRACK_METADATA[numericId]) {
+    return TRACK_METADATA[numericId];
+  }
+
+  // An exact name or alias wins over a partial one ("Spa" is Belgium's alias, not part of "spain")
+  for (const info of Object.values(TRACK_METADATA)) {
+    if (info.name.toLowerCase() === trimmed || info.aliases?.some((a) => a.toLowerCase() === trimmed)) {
+      return info;
+    }
+  }
+  for (const info of Object.values(TRACK_METADATA)) {
+    if (info.aliases && info.aliases.some((a) => trimmed.includes(a.toLowerCase()) || a.toLowerCase().includes(trimmed))) {
+      return info;
+    }
+  }
+
+  return null;
+};
+
+export const AI_ERROR_CODES = {
+  MISSING_API_KEY: 'MISSING_API_KEY',
+  MODEL_OVERLOADED: 'MODEL_OVERLOADED',
+  QUOTA_EXCEEDED: 'QUOTA_EXCEEDED',
+  INVALID_API_KEY: 'INVALID_API_KEY',
+  MODEL_NOT_FOUND: 'MODEL_NOT_FOUND',
+  NETWORK_ERROR: 'NETWORK_ERROR',
+  GENERIC_ERROR: 'GENERIC_ERROR',
+  INVALID_REQUEST: 'INVALID_REQUEST',
+} as const;
+
+export type AIErrorCode = (typeof AI_ERROR_CODES)[keyof typeof AI_ERROR_CODES];
+
+export const AI_PROVIDER_URLS: Record<string, { name: string; url: string; freeTier: boolean }> = {
+  gemini: {
+    name: 'Google AI Studio',
+    url: 'https://aistudio.google.com/app/apikey',
+    freeTier: true,
+  },
+  openai: {
+    name: 'OpenAI Platform',
+    url: 'https://platform.openai.com/api-keys',
+    freeTier: false,
+  },
+  claude: {
+    name: 'Claude Console',
+    url: 'https://platform.claude.com/settings/keys',
+    freeTier: false,
+  },
+  custom: {
+    name: 'Groq Console',
+    url: 'https://console.groq.com/keys',
+    freeTier: true,
+  },
+};
+
+/**
+ * Common OpenAI-compatible servers for the "custom" AI provider. Picking one fills in its address;
+ * local servers run on the same computer as this app and need no key.
+ */
+export const AI_SERVER_PRESETS: ReadonlyArray<{
+  id: string;
+  name: string;
+  baseUrl: string;
+  local: boolean;
+  keyUrl?: string;
+}> = [
+  { id: 'ollama', name: 'Ollama', baseUrl: 'http://localhost:11434/v1', local: true },
+  { id: 'lmstudio', name: 'LM Studio', baseUrl: 'http://localhost:1234/v1', local: true },
+  { id: 'groq', name: 'Groq', baseUrl: 'https://api.groq.com/openai/v1', local: false, keyUrl: 'https://console.groq.com/keys' },
+];
+
+export const RADIO_PERSONAS = {
+  BONO: 'bono',
+  COLAPINTO: 'colapinto',
+  CUSTOM: 'custom',
+} as const;
+
+export type RadioPersona = (typeof RADIO_PERSONAS)[keyof typeof RADIO_PERSONAS];
+
+export const RADIO_LANGUAGES = {
+  AUTO: 'auto',
+  ES: 'es',
+  EN: 'en',
+} as const;
+
+export type RadioLanguage = (typeof RADIO_LANGUAGES)[keyof typeof RADIO_LANGUAGES];
+
+export const RADIO_AUDIO_CONSTANTS = {
+  BEEP_START_FREQ_1: 800,
+  BEEP_START_FREQ_2: 1200,
+  BEEP_START_DURATION_S: 0.08,
+  BEEP_END_FREQ_START: 750,
+  BEEP_END_FREQ_END: 350,
+  BEEP_END_DURATION_S: 0.12,
+  /** Gap between the two tones of the start beep. */
+  BEEP_START_GAP_S: 0.02,
+  BEEP_GAIN: 0.15,
+  /**
+   * A beep ends when its last tone does (an audio event, which a hidden page doesn't delay); a
+   * page whose audio never ran gets this long past the beep's length instead.
+   */
+  AUDIO_END_FALLBACK_MS: 1000,
+  FILTER_CENTER_FREQ_HZ: 1400,
+  FILTER_Q: 1.2,
+  DEFAULT_VOLUME: 0.8,
+  DEFAULT_SPEECH_RATE: 1.05,
+  DISTORTION_AMOUNT: 15,
+  DEFAULT_SPEECH_RATE_PERCENT: 0,
+  MIN_SPEECH_RATE_PERCENT: -20,
+  MAX_SPEECH_RATE_PERCENT: 30,
+  DEFAULT_SPEECH_PITCH_HZ: 0,
+  MIN_SPEECH_PITCH_HZ: -100,
+  MAX_SPEECH_PITCH_HZ: 100,
+  RADIO_STATIC_GAIN: 0.035,
+  HELMET_HIGHCUT_FREQ_HZ: 3600,
+  HELMET_WARMTH_FREQ_HZ: 850,
+  HELMET_WARMTH_GAIN_DB: 3.5,
+  ANALYZER_FFT_SIZE: 64,
+  /**
+   * Synthesized radio clips kept in memory, the one used longest ago going first; streamed replies
+   * add one clip per sentence, and the traffic calls synthesized ahead take about 40.
+   */
+  TTS_CACHE_MAX_ENTRIES: 150,
+} as const;
+
+export const RADIO_NEURAL_VOICES = {
+  COLAPINTO: 'es-AR-TomasNeural',
+  BONO: 'en-GB-RyanNeural',
+  SPANISH_ALVARO: 'es-ES-AlvaroNeural',
+  MEXICAN_JORGE: 'es-MX-JorgeNeural',
+  AMERICAN_GUY: 'en-US-GuyNeural',
+} as const;
+
+export const RADIO_SPANISH_VOICES = [
+  { id: 'es-AR-TomasNeural', translationKey: 'tomas' },
+  { id: 'es-MX-JorgeNeural', translationKey: 'jorge' },
+  { id: 'es-ES-AlvaroNeural', translationKey: 'alvaro' },
+] as const;
+
+export const RADIO_ENGLISH_VOICES = [
+  { id: 'en-GB-RyanNeural', translationKey: 'ryan' },
+  { id: 'en-US-GuyNeural', translationKey: 'guy' },
+] as const;
+
+export const RADIO_CONVERSATION_LIMITS = {
+  /** Driver/engineer exchanges the voice engineer keeps as context within one session. */
+  MAX_EXCHANGES: 8,
+  /** How long a released transmission waits for the recognizer's last words. */
+  RECOGNIZER_END_TIMEOUT_MS: 1500,
+  /** A shorter press that heard nothing is taken as an accidental tap: the engineer doesn't ask to say again. */
+  MIN_PRESS_FOR_SAY_AGAIN_MS: 500,
+  /**
+   * An in-game press the app saw come back up sooner than MIN_PRESS_FOR_SAY_AGAIN_MS keeps the radio
+   * open: the wheel reading can end a press the driver is still holding. It goes out once the driver
+   * stops talking for OPEN_MIC_SILENCE_MS, or presses again.
+   */
+  OPEN_MIC_SILENCE_MS: 1500,
+  /** An open radio where nothing was said closes quietly after this long. */
+  OPEN_MIC_NO_SPEECH_MS: 6000,
+  /** The longest an open radio stays open. */
+  OPEN_MIC_MAX_MS: 20000,
+  /** Without the answer's first sentence this long after the release, the engineer says "stand by". */
+  STAND_BY_AFTER_MS: 2000,
+} as const;
+
+/** Routine calls the AI words afresh (POST /api/ai/radio-line). */
+export const RADIO_LINE = {
+  /** How long a call waits for the AI's line before the catalogue's words are said instead. */
+  CLIENT_DEADLINE_MS: 2500,
+} as const;
+
+/** The qualifying traffic calls' lines, synthesized ahead so a warning starts at once. */
+export const TRAFFIC_PREFETCH = {
+  /** They are synthesized again this often: the dashboard's audio cache keeps only the latest lines. */
+  REFRESH_MS: 120_000,
+} as const;
+
+export const RADIO_PHRASE_CONSTANTS = {
+  /** A routine call says the driver's callsign once every this many routine calls; an urgent one always does. */
+  CALLSIGN_ROUTINE_EVERY: 4,
+} as const;
+
+export const RADIO_PTT_MODES = {
+  HOLD: 'hold',
+  TOGGLE: 'toggle',
+} as const;
+
+export type RadioPTTMode = (typeof RADIO_PTT_MODES)[keyof typeof RADIO_PTT_MODES];
+
+export const RADIO_STORAGE_KEYS = {
+  // Per-device audio preferences: they depend on the speakers in front of each device.
+  BEEPS_ENABLED: 'f1_radio_beeps_enabled',
+  FILTER_ENABLED: 'f1_radio_filter_enabled',
+  STATIC_FX_ENABLED: 'f1_radio_static_fx_enabled',
+  VOLUME: 'f1_radio_volume',
+  ALERTS_ENABLED: 'f1_radio_alerts_enabled',
+} as const;
+
+/**
+ * Where older versions kept the engineer's voice and push-to-talk setup in each browser. These now
+ * live on the server; the keys are only read once to move the values there, then deleted.
+ */
+export const LEGACY_RADIO_STORAGE_KEYS = {
+  PERSONA: 'f1_radio_persona',
+  LANGUAGE: 'f1_radio_language',
+  CUSTOM_PROMPT: 'f1_radio_custom_prompt',
+  DRIVER_CALLSIGN: 'f1_radio_driver_callsign',
+  NEURAL_VOICE: 'f1_radio_neural_voice',
+  SPEECH_RATE: 'f1_radio_speech_rate',
+  SPEECH_PITCH: 'f1_radio_speech_pitch',
+  PTT_MODE: 'f1_radio_ptt_mode',
+  GAMEPAD_MAPPING: 'f1_radio_gamepad_mapping',
+  KEYBOARD_KEY: 'f1_radio_keyboard_key',
+} as const;
+
+export const RADIO_ALERT_CONSTANTS = {
+  TYRE_WEAR_THRESHOLDS: [40, 60, 75] as const,
+  DEFAULT_TYRE_WARN_PCT: 40,
+  DEFAULT_TYRE_CRIT_PCT: 75,
+  PUNCTURE_THRESHOLD: 95,
+  RIVAL_DRS_GAP_SECONDS: 1.0,
+  DEFAULT_RIVAL_GAP_SEC: 1.0,
+  DEFAULT_RIVAL_AHEAD_GAP_SEC: 1.2,
+  RIVAL_PACE_DELTA_SECONDS: 0.4,
+  RAIN_PROBABILITY_THRESHOLD: 50,
+  DEFAULT_RAIN_PROB_PCT: 50,
+  DEFAULT_RAIN_HORIZON_MIN: 5,
+  COOLDOWN_NON_CRITICAL_MS: 45000,
+  DEFAULT_KEYBOARD_KEY: 'None',
+  CHATTER_PRESETS: {
+    TALKATIVE: 20,
+    NORMAL: 45,
+    MINIMAL: 90,
+  } as const,
+  TYRE_TEMP_OVERHEAT_C: 115,
+  TYRE_TEMP_COLD_C: 85,
+  DEFAULT_TYRE_TEMP_MARGIN_C: 5,
+  DEFAULT_PIT_CALL_LEAD_M: 500,
+  DEFAULT_GAP_REPORT_LAPS: 3,
+  SMART_DISCRETION_BRAKE_THRESHOLD: 50,
+  SMART_DISCRETION_STEER_THRESHOLD: 0.45,
+  // Mechanical & Aero Damage defaults
+  DEFAULT_WING_DAMAGE_WARN_PCT: 20,
+  DEFAULT_FLOOR_DAMAGE_WARN_PCT: 25,
+  DEFAULT_ENGINE_WEAR_WARN_PCT: 70,
+  // ERS & Engine defaults
+  DEFAULT_ERS_LOW_PCT: 15,
+  DEFAULT_ENGINE_OVERHEAT_C: 125,
+  MAX_ERS_JOULES: 4000000.0,
+  // Brake defaults
+  DEFAULT_BRAKE_OVERHEAT_C: 900,
+  DEFAULT_BRAKE_COLD_C: 200,
+  // Fuel & Strategy defaults
+  DEFAULT_FUEL_DELTA_LAPS: -0.5,
+  DEFAULT_UNDERCUT_GAP_SEC: 2.5,
+  // Qualifying defaults
+  QUALY_CLEAN_AIR_MIN_GAP_SEC: 4.0,
+  DEFAULT_QUALY_CLEAN_AIR_SEC: 4.0,
+  DEFAULT_QUALY_TRAFFIC_WARN_SEC: 8,
+  QUALY_CLEAN_AIR_DISTANCE_METERS: 250,
+  QUALY_OUTLAP_SECTOR_TRIGGER: 3,
+  // Flags & Penalties defaults
+  DEFAULT_CORNER_CUT_WARN_THRESHOLD: 2,
+  // Phase & Contextual Filtering defaults
+  MIN_OUT_LAP_DISTANCE_PCT: 0.3,
+  POST_PIT_SUPPRESSION_LAPS: 1,
+  SPEED_GARAGE_MAX_KMH: 5,
+} as const;
+
+export type RadioTriggerPreset = 'immersive' | 'coaching' | 'minimal' | 'custom';
+
+export const RADIO_TRIGGER_PRESETS = {
+  IMMERSIVE: 'immersive',
+  COACHING: 'coaching',
+  MINIMAL: 'minimal',
+  CUSTOM: 'custom',
+} as const;
+
+export const LIVE_VIEW_MODES = {
+  DASHBOARD: 'dashboard',
+  COCKPIT: 'cockpit',
+  /** Big numbers for a phone on the rig. */
+  DRIVER: 'driver',
+} as const;
+
+export type LiveViewMode = (typeof LIVE_VIEW_MODES)[keyof typeof LIVE_VIEW_MODES];
+
+export const STORAGE_KEY_LIVE_VIEW_MODE = 'f1_live_view_mode';
+
+/**
+ * How Race Control lays out its four hub panels: all four in a 2 × 2 grid or in one row (a wide
+ * second monitor), or two of them larger for the race (feed, pit strategy) or for pace (sectors, feed).
+ */
+export const RACE_CONTROL_LAYOUTS = {
+  GRID: 'grid',
+  ROW: 'row',
+  RACE: 'race',
+  TIMING: 'timing',
+} as const;
+
+export type RaceControlLayout = (typeof RACE_CONTROL_LAYOUTS)[keyof typeof RACE_CONTROL_LAYOUTS];
+
+export const STORAGE_KEY_RACE_CONTROL_LAYOUT = 'f1_race_control_layout';
+
+/** How often the car detail drawer reloads the car's lap history while it's open. */
+export const CAR_LAPS_REFRESH_MS = 5_000;
+/** The live mode last used at phone size, kept apart so a phone opens the Driver view by default. */
+export const STORAGE_KEY_LIVE_VIEW_MODE_PHONE = 'f1_live_view_mode_phone';
+
+/**
+ * Performance mode (solid surfaces, no glow or motion) is saved per device, as two choices:
+ * one for the Driver view, where it's on by default, and one for every other page (off by default).
+ */
+export const STORAGE_KEY_PERFORMANCE_MODE = 'f1_performance_mode';
+export const STORAGE_KEY_PERFORMANCE_MODE_DRIVER = 'f1_performance_mode_driver';
+
+/** What the live telemetry feed is doing right now, as shown in the nav and the live header. */
+export const LIVE_STATUS = {
+  /** The backend can't be reached. */
+  OFFLINE: 'offline',
+  /** Connected to the backend, but no session packets have arrived yet. */
+  LISTENING: 'listening',
+  /** Packets are arriving. */
+  LIVE: 'live',
+  /** A session was running but packets stopped (game closed or in the menus). */
+  STALE: 'stale',
+} as const;
+
+export type LiveStatus = (typeof LIVE_STATUS)[keyof typeof LIVE_STATUS];
+
+/** A live session counts as stale once no packet has arrived for this long. */
+export const LIVE_STALE_AFTER_MS = 3_000;
+/** How often the live status re-checks for a stale feed. */
+export const LIVE_STATUS_POLL_MS = 1_000;
+/** A gap trend under this many ms per lap counts as stable (as the race engineer says it). */
+export const GAP_TREND_STABLE_MS_PER_LAP = 50;
+/** How often pages without the live feed ask the server whether telemetry is arriving. */
+export const SYSTEM_STATUS_POLL_MS = 2_000;
+/** Pages without the live feed stop calling a session stale (and go back to listening) after this long. */
+export const LIVE_STALE_FORGET_MS = 60_000;
+
+/** The game's default UDP telemetry port, shown until the server reports the real one. */
+export const DEFAULT_UDP_PORT = 20777;
+/** The address to enter in the game when it runs on the same PC as this app. */
+export const LOCALHOST_IPV4 = '127.0.0.1';
+
+export const DEFAULT_PIT_STRATEGY_DEFAULTS = {
+  IDEAL_LAP: 18,
+  LATEST_LAP: 24,
+  REJOIN_POSITION: 6,
+} as const;
+
+export const DEFAULT_WEATHER_DEFAULTS = {
+  TRACK_TEMP: 28,
+  AIR_TEMP: 22,
+} as const;
+
+export const TRACK_MAP_CONSTANTS = {
+  PADDING: 28,
+  LINE_WIDTH: 3.5,
+  SHADOW_LINE_WIDTH: 5.5,
+  DEFAULT_HEIGHT: 360,
+  APEX_HOVER_RADIUS: 12,
+  APEX_NEAR_DISTANCE: 40,
+  CLICK_MAX_DISTANCE: 30,
+} as const;
+
+export const MAX_ERS_STORE_ENERGY_J = 4_000_000;
+export const LEADERBOARD_COLUMN_SPLIT = 11;
+export const DEFAULT_MAX_SPEED_FALLBACK_KPH = 350;
+
+export interface TyreThermalWindow {
+  compound: string;
+  minTemp: number;
+  maxTemp: number;
+}
+
+export const TYRE_DEGRADATION_TEMP_MARGIN_C = 5.0;
+
+export const COMPOUND_THERMAL_WINDOWS: Record<string, TyreThermalWindow> = {
+  C1: { compound: 'C1', minTemp: 95, maxTemp: 115 },
+  C2: { compound: 'C2', minTemp: 85, maxTemp: 115 },
+  C3: { compound: 'C3', minTemp: 85, maxTemp: 95 },
+  C4: { compound: 'C4', minTemp: 75, maxTemp: 95 },
+  C5: { compound: 'C5', minTemp: 75, maxTemp: 85 },
+  C6: { compound: 'C6', minTemp: 65, maxTemp: 85 },
+  INTERMEDIATE: { compound: 'INTERMEDIATE', minTemp: 55, maxTemp: 75 },
+  WET: { compound: 'WET', minTemp: 55, maxTemp: 65 },
+};
+
+export const getTyreThermalWindow = (actualCompound?: number, visualCompound?: number): TyreThermalWindow => {
+  switch (actualCompound) {
+    case 20: // C1
+      return COMPOUND_THERMAL_WINDOWS.C1;
+    case 19: // C2
+      return COMPOUND_THERMAL_WINDOWS.C2;
+    case 18: // C3
+      return COMPOUND_THERMAL_WINDOWS.C3;
+    case 17: // C4
+      return COMPOUND_THERMAL_WINDOWS.C4;
+    case 16: // C5
+      return COMPOUND_THERMAL_WINDOWS.C5;
+    case TYRE_COMPOUND_IDS.INTERMEDIATE:
+      return COMPOUND_THERMAL_WINDOWS.INTERMEDIATE;
+    case TYRE_COMPOUND_IDS.WET:
+      return COMPOUND_THERMAL_WINDOWS.WET;
+  }
+
+  // Visual compound fallbacks agreed in design: Soft -> C4, Medium -> C3, Hard -> C2
+  switch (visualCompound) {
+    case TYRE_COMPOUND_IDS.SOFT:
+      return COMPOUND_THERMAL_WINDOWS.C4;
+    case TYRE_COMPOUND_IDS.MEDIUM:
+      return COMPOUND_THERMAL_WINDOWS.C3;
+    case TYRE_COMPOUND_IDS.HARD:
+      return COMPOUND_THERMAL_WINDOWS.C2;
+    case TYRE_COMPOUND_IDS.INTERMEDIATE:
+      return COMPOUND_THERMAL_WINDOWS.INTERMEDIATE;
+    case TYRE_COMPOUND_IDS.WET:
+      return COMPOUND_THERMAL_WINDOWS.WET;
+    default:
+      return COMPOUND_THERMAL_WINDOWS.C3;
+  }
+};
+
+export const ENGINE_THERMAL_DERATE_CURVE = [
+  { tempC: 65, powerPct: 96.0 },
+  { tempC: 75, powerPct: 97.0 },
+  { tempC: 85, powerPct: 98.0 },
+  { tempC: 95, powerPct: 99.0 },
+  { tempC: 105, powerPct: 99.7 },
+  { tempC: 115, powerPct: 100.0 },
+  { tempC: 125, powerPct: 100.0 },
+  { tempC: 135, powerPct: 98.5 },
+  { tempC: 145, powerPct: 94.0 },
+  { tempC: 155, powerPct: 91.0 },
+  { tempC: 165, powerPct: 88.5 },
+  { tempC: 175, powerPct: 85.0 },
+] as const;
+
+export const calculateEnginePowerPct = (tempC: number): { powerPct: number; powerLossPct: number } => {
+  if (tempC <= ENGINE_THERMAL_DERATE_CURVE[0].tempC) {
+    const powerPct = ENGINE_THERMAL_DERATE_CURVE[0].powerPct;
+    return { powerPct, powerLossPct: 100 - powerPct };
+  }
+  const lastIdx = ENGINE_THERMAL_DERATE_CURVE.length - 1;
+  if (tempC >= ENGINE_THERMAL_DERATE_CURVE[lastIdx].tempC) {
+    const powerPct = ENGINE_THERMAL_DERATE_CURVE[lastIdx].powerPct;
+    return { powerPct, powerLossPct: 100 - powerPct };
+  }
+
+  for (let i = 0; i < lastIdx; i++) {
+    const p1 = ENGINE_THERMAL_DERATE_CURVE[i];
+    const p2 = ENGINE_THERMAL_DERATE_CURVE[i + 1];
+    if (tempC >= p1.tempC && tempC <= p2.tempC) {
+      if (p2.tempC === p1.tempC) {
+        return { powerPct: p1.powerPct, powerLossPct: 100 - p1.powerPct };
+      }
+      const ratio = (tempC - p1.tempC) / (p2.tempC - p1.tempC);
+      const powerPct = p1.powerPct + ratio * (p2.powerPct - p1.powerPct);
+      return { powerPct, powerLossPct: 100 - powerPct };
+    }
+  }
+
+  return { powerPct: 100, powerLossPct: 0 };
+};
