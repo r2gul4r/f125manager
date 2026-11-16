@@ -1,0 +1,10 @@
+-c requirements-web-lock.txt
+fastapi
+openai-codex
+pygame
+pywebview; sys_platform == "win32"
+opencv-python-headless
+numpy
+Pillow
+uvicorn[standard]
+./rust-core
