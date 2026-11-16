@@ -76,7 +76,7 @@ impl MiniTiming {
             return;
         }
         self.cars.resize_with(rows.len() / 57, CarSplits::default);
-        for (car, r) in self.cars.iter_mut().zip(rows.chunks_exact(57)) {
+        for (car, r) in self.cars.iter_mut().zip(rows.as_chunks::<57>().0) {
             let lap = r[33];
             let distance = f32::from_le_bytes(r[20..24].try_into().unwrap());
             let time = u32::from_le_bytes(r[4..8].try_into().unwrap());
@@ -215,7 +215,9 @@ mod tests {
         let last = minis.cars[0].finished.as_ref().unwrap();
         let sums: Vec<u32> = last
             .times
-            .chunks_exact(8)
+            .as_chunks::<8>()
+            .0
+            .iter()
             .map(|s| {
                 s.iter()
                     .copied()

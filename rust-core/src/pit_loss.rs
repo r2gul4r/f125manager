@@ -99,7 +99,7 @@ mod tests {
     fn transit_loss_requires_two_continuous_on_track_references() {
         fn rows(t: u64, invalid_peer: bool) -> Vec<u8> {
             let mut rows = vec![0; 57 * 3];
-            for (slot, r) in rows.chunks_exact_mut(57).enumerate() {
+            for (slot, r) in rows.as_chunks_mut::<57>().0.iter_mut().enumerate() {
                 let d = if slot == 0 {
                     100.0 + t as f32 * 0.01
                 } else {
@@ -238,7 +238,9 @@ impl Transit {
     fn start(rows: &[u8], player: usize, ms: u64, length: u16) -> Option<Self> {
         let entry = distance(&rows[player * 57..], length)?;
         let traces = rows
-            .chunks_exact(57)
+            .as_chunks::<57>()
+            .0
+            .iter()
             .enumerate()
             .map(|(i, r)| {
                 let d = distance(r, length)?;
@@ -254,7 +256,7 @@ impl Transit {
     }
 
     fn update(&mut self, rows: &[u8], ms: u64, exiting: bool) {
-        for (slot, r) in self.traces.iter_mut().zip(rows.chunks_exact(57)) {
+        for (slot, r) in self.traces.iter_mut().zip(rows.as_chunks::<57>().0) {
             let Some(points) = slot.as_mut() else {
                 continue;
             };
@@ -312,7 +314,9 @@ impl Visit {
     pub(crate) fn start(rows: &[u8], player: usize, ms: u64, length: u16) -> Self {
         let me = &rows[player * 57..];
         let entry_gaps = rows
-            .chunks_exact(57)
+            .as_chunks::<57>()
+            .0
+            .iter()
             .enumerate()
             .map(|(slot, r)| {
                 (slot != player && valid_gap(me) && on_track(r)).then(|| gap(me) - gap(r))
@@ -329,7 +333,7 @@ impl Visit {
         if let Some(transit) = &mut self.transit {
             transit.update(rows, ms, me[34] != 2 && me[46] != 1);
         }
-        for (baseline, rival) in self.entry_gaps.iter_mut().zip(rows.chunks_exact(57)) {
+        for (baseline, rival) in self.entry_gaps.iter_mut().zip(rows.as_chunks::<57>().0) {
             if !on_track(rival) {
                 *baseline = None;
             }
@@ -357,7 +361,7 @@ impl Visit {
             .entry_gaps
             .iter()
             .copied()
-            .zip(rows.chunks_exact(57))
+            .zip(rows.as_chunks::<57>().0)
             .filter_map(|(before, rival)| Some(gap(me) - gap(rival) - before?))
             .collect();
         changes.sort_unstable();

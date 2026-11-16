@@ -45,7 +45,9 @@ impl Practice {
         };
         let stride = if modern { 59 } else { 55 };
         for (i, (a, s)) in laps[29..]
-            .chunks_exact(57)
+            .as_chunks::<57>()
+            .0
+            .iter()
             .zip(status[29..].chunks_exact(stride))
             .enumerate()
         {
@@ -162,7 +164,7 @@ mod tests {
                 laps[15..19].copy_from_slice(&clock);
                 status[15..19].copy_from_slice(&clock);
                 laps[19..23].copy_from_slice(&sec.to_le_bytes());
-                for (i, c) in laps[29..].chunks_exact_mut(57).enumerate() {
+                for (i, c) in laps[29..].as_chunks_mut::<57>().0.iter_mut().enumerate() {
                     c[..4].copy_from_slice(&30000u32.to_le_bytes());
                     c[4..8].copy_from_slice(&((sec % 30) * 1000).to_le_bytes());
                     c[33] = (sec / 30 + 1) as u8;

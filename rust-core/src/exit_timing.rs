@@ -66,7 +66,7 @@ impl ExitTiming {
             clock,
             metres: [None; 24],
         };
-        for (i, r) in rows.chunks_exact(57).enumerate() {
+        for (i, r) in rows.as_chunks::<57>().0.iter().enumerate() {
             if matches!(r[45], 2 | 3) && r[34] == 0 && r[46] == 0 && r[32] > 0 {
                 now.metres[i] = distance(r, length);
             }
@@ -95,7 +95,9 @@ impl ExitTiming {
         if let Some((at, player)) = exit {
             let me = &rows[player * 57..];
             let neighbour = |rank| {
-                rows.chunks_exact(57)
+                rows.as_chunks::<57>()
+                    .0
+                    .iter()
                     .position(|r| rank > 0 && r[32] == rank && matches!(r[45], 2 | 3))
             };
             let (ahead, behind) = (neighbour(me[32] - 1), neighbour(me[32] + 1));
@@ -160,7 +162,9 @@ mod tests {
     fn packet(front: f32, back: f32) -> Vec<u8> {
         let mut rows = vec![0; 57 * 3];
         for (i, (row, d)) in rows
-            .chunks_exact_mut(57)
+            .as_chunks_mut::<57>()
+            .0
+            .iter_mut()
             .zip([front, 100., back])
             .enumerate()
         {

@@ -22,7 +22,13 @@ import f125_core
 from demo_strategy import Plan, demo_conditions
 from game_mfd import RacePitSync
 from gp_advisor import AdvisorView, GpAdvisor, context_key, gp_key
-from live_timing import ExitTrends, PlanDisplay, connection_state, live_frame, recommend_plan
+from live_timing import (
+    ExitTrends,
+    PlanDisplay,
+    connection_state,
+    live_frame,
+    recommend_plan,
+)
 from pit_review import Sample, comparison, save_samples
 from practice_saves import PracticeSaves
 from race import COLORS, DURATION, SCENES, TYRES, WEB_GRID, lap_time, snapshot
@@ -33,8 +39,8 @@ from recordings import (
     playback,
     recording_analysis,
 )
-from wheel_input import WheelInput
 from voice_control import Microphone
+from wheel_input import WheelInput
 
 
 @asynccontextmanager

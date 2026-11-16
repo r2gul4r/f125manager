@@ -41,8 +41,10 @@ fn race_gap(rows: &[u8], car: &[u8]) -> Option<u32> {
         return Some(direct);
     }
     let adjacent = |pos: u8| {
-        rows.chunks_exact(57)
-            .find(|r| r[45] == 2 && r[32] == pos && valid_gap(r) && u16_at(r, 17) < 60000)
+        rows.as_chunks::<57>()
+            .0
+            .iter()
+            .find(|&r| r[45] == 2 && r[32] == pos && valid_gap(r) && u16_at(r, 17) < 60000)
     };
     let ahead = adjacent(car[32] - 1)?;
     let behind = adjacent(car[32].checked_add(1)?)?;
@@ -68,7 +70,9 @@ fn completed_battle_lap(row: &[u8], history: Option<&[u8]>, number: u8) -> Optio
     }
     if let Some(h) = history {
         if h[1436..]
-            .chunks_exact(3)
+            .as_chunks::<3>()
+            .0
+            .iter()
             .take(h[31] as usize)
             .any(|s| s[0] != 255 && number <= s[0].saturating_add(1))
         {
@@ -87,7 +91,11 @@ fn completed_battle_lap(row: &[u8], history: Option<&[u8]>, number: u8) -> Optio
 // The leader can start the next lap while a rival is still approaching the
 // line. Their leader gaps still use the same clock until a full lap separates them.
 fn comparable_laps(rows: &[u8], track_length: u16) -> bool {
-    let mut racing = rows.chunks_exact(57).filter(|r| r[45] == 2 && r[32] > 0);
+    let mut racing = rows
+        .as_chunks::<57>()
+        .0
+        .iter()
+        .filter(|r| r[45] == 2 && r[32] > 0);
     let Some(leader) = racing.clone().find(|r| r[32] == 1) else {
         return false;
     };
@@ -109,7 +117,9 @@ fn comparable_laps(rows: &[u8], track_length: u16) -> bool {
 fn forecast_gaps(rows: &[u8], track_length: u16, comparable: bool) -> Option<Vec<(u8, u32)>> {
     if comparable {
         let direct: Option<Vec<_>> = rows
-            .chunks_exact(57)
+            .as_chunks::<57>()
+            .0
+            .iter()
             .filter(|r| r[45] == 2 && r[32] > 0)
             .map(|r| race_gap(rows, r).map(|gap| (r[32], gap)))
             .collect();
@@ -125,8 +135,11 @@ fn forecast_gaps(rows: &[u8], track_length: u16, comparable: bool) -> Option<Vec
 // Never use these forecast-only clocks as pit-loss observations.
 fn linked_forecast_gaps(rows: &[u8], track_length: u16) -> Option<Vec<(u8, u32)>> {
     let mut cars: Vec<_> = rows
-        .chunks_exact(57)
+        .as_chunks::<57>()
+        .0
+        .iter()
         .filter(|r| r[45] == 2 && r[32] > 0)
+        .map(<[u8; 57]>::as_slice)
         .collect();
     cars.sort_unstable_by_key(|r| r[32]);
     let leader = *cars.first()?;
@@ -756,7 +769,9 @@ impl Feed {
             let display = &mut self.lap_battles[side];
             let pos = i16::from(me[32]) + if side == 0 { -1 } else { 1 };
             let other = rows
-                .chunks_exact(57)
+                .as_chunks::<57>()
+                .0
+                .iter()
                 .enumerate()
                 .find(|(_, r)| i16::from(r[32]) == pos && r[45] == 2);
             let Some((slot, rival)) = other else {
@@ -765,9 +780,9 @@ impl Feed {
                 continue;
             };
             let (lead, follow, pair) = if side == 0 {
-                (rival, me, (slot as u8, player as u8))
+                (rival.as_slice(), me, (slot as u8, player as u8))
             } else {
-                (me, rival, (player as u8, slot as u8))
+                (me, rival.as_slice(), (player as u8, slot as u8))
             };
             if lead[34] != 0 || follow[34] != 0 || lead[46] != 0 || follow[46] != 0 || me[45] != 2 {
                 *display = Default::default();
@@ -886,7 +901,7 @@ impl Feed {
         let caution = safety != 0 || marshal_zones(session).iter().any(|z| z.1 >= 3);
         let can_start = self.field_inside.len() == slots && contiguous && safety <= 2;
         self.field_inside.resize(slots, None);
-        for (slot, car) in rows.chunks_exact(57).enumerate() {
+        for (slot, car) in rows.as_chunks::<57>().0.iter().enumerate() {
             let inside = car[46] == 1 || car[34] == 2;
             let previous = self.field_inside[slot].replace(inside);
             let visible = self.packets.get(&(4, 0)).is_some_and(|p| {
@@ -1192,11 +1207,19 @@ impl Feed {
             return;
         };
         let active: Vec<_> = rows
-            .chunks_exact(57)
+            .as_chunks::<57>()
+            .0
+            .iter()
             .filter(|r| r[45] == 2 && r[32] > 0)
             .collect();
         if active.len() != usize::from(participants[29])
-            && rows.chunks_exact(57).filter(|r| r[45] >= 3).count() + active.len()
+            && rows
+                .as_chunks::<57>()
+                .0
+                .iter()
+                .filter(|r| r[45] >= 3)
+                .count()
+                + active.len()
                 != usize::from(participants[29])
             || active.is_empty()
             || me[32] > participants[29]
@@ -1230,7 +1253,9 @@ impl Feed {
                     0
                 };
             let rank = 1 + rows
-                .chunks_exact(57)
+                .as_chunks::<57>()
+                .0
+                .iter()
                 .enumerate()
                 .filter(|(slot, r)| {
                     if r[45] != 2 || r[32] == 0 || r[32] == me[32] {
@@ -1239,7 +1264,7 @@ impl Feed {
                     let remaining = self
                         .field_visits
                         .get(slot)
-                        .and_then(|v| v.measurement.delta(rows, r))
+                        .and_then(|v| v.measurement.delta(rows, *r))
                         .map(|ms| loss.saturating_sub(ms))
                         .unwrap_or_else(|| if r[44] == 2 && r[46] == 0 { loss } else { 0 });
                     (gap_by_position[usize::from(r[32])] + remaining, r[32]) < (finish, me[32])
@@ -1501,7 +1526,9 @@ impl Feed {
         d.set_item("comparableLaps", comparable)?;
         if !comparable
             || lap_rows
-                .chunks_exact(57)
+                .as_chunks::<57>()
+                .0
+                .iter()
                 .any(|r| r[45] == 2 && r[32] > 1 && split(r, 17) == 0)
         {
             if let Some(gaps) = forecast_gaps(lap_rows, length, comparable) {
@@ -1518,7 +1545,9 @@ impl Feed {
         d.set_item("trackTemp", s[30] as i8)?;
         d.set_item("airTemp", s[31] as i8)?;
         let outlook: Vec<_> = s[156..]
-            .chunks_exact(8)
+            .as_chunks::<8>()
+            .0
+            .iter()
             .take(usize::from(s[155].min(64)))
             .filter(|f| f[0] == s[35] && f[2] <= 5 && f[7] <= 100)
             .map(|f| (f[1], f[2], f[7]))
@@ -1665,7 +1694,9 @@ impl Feed {
                 }
                 if let Some(t) = self.packets.get(&(12, i as u8)) {
                     let sets: Vec<_> = t[30..230]
-                        .chunks_exact(10)
+                        .as_chunks::<10>()
+                        .0
+                        .iter()
                         .enumerate()
                         .filter(|(_, set)| matches!(set[1], 7 | 8 | 16..=18) && set[2] <= 100)
                         .map(|(index, set)| {
