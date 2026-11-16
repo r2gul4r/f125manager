@@ -1,0 +1,229 @@
+{
+  "database_sha256": "407bf94a75ed3e368487a9fff63925a044d4acfe7df0ad0d86ca2c6c5a1cfbba",
+  "profiles": {
+    "f1": [
+      {
+        "training_max": 20,
+        "routine": [
+          2500,
+          2540
+        ],
+        "wing": 5200,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": true
+      },
+      {
+        "training_max": 40,
+        "routine": [
+          2450,
+          2500
+        ],
+        "wing": 5200,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": true
+      },
+      {
+        "training_max": 60,
+        "routine": [
+          2400,
+          2450
+        ],
+        "wing": 5200,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": true
+      },
+      {
+        "training_max": 80,
+        "routine": [
+          2300,
+          2400
+        ],
+        "wing": 5200,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": true
+      },
+      {
+        "training_max": 100,
+        "routine": [
+          2240,
+          2300
+        ],
+        "wing": 5200,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      }
+    ],
+    "f2": [
+      {
+        "training_max": 20,
+        "routine": [
+          4000,
+          4300
+        ],
+        "wing": 9300,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      },
+      {
+        "training_max": 40,
+        "routine": [
+          4000,
+          4300
+        ],
+        "wing": 9300,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      },
+      {
+        "training_max": 60,
+        "routine": [
+          4000,
+          4300
+        ],
+        "wing": 9300,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      },
+      {
+        "training_max": 80,
+        "routine": [
+          4000,
+          4300
+        ],
+        "wing": 9300,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      },
+      {
+        "training_max": 100,
+        "routine": [
+          4000,
+          4300
+        ],
+        "wing": 9300,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      }
+    ],
+    "f1_equal_performance": [
+      {
+        "training_max": 100,
+        "routine": [
+          2240,
+          2240
+        ],
+        "wing": 5200,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      }
+    ],
+    "f2_equal_performance": [
+      {
+        "training_max": 100,
+        "routine": [
+          4000,
+          4000
+        ],
+        "wing": 9300,
+        "offsets": [
+          0,
+          400,
+          830
+        ],
+        "mistake_possible": false
+      }
+    ]
+  },
+  "mistakes": {
+    "slow_front_left_wheel_removal": [
+      500,
+      1000
+    ],
+    "slow_front_right_wheel_removal": [
+      500,
+      1000
+    ],
+    "slow_back_left_wheel_removal": [
+      500,
+      1000
+    ],
+    "slow_back_right_wheel_removal": [
+      500,
+      1000
+    ],
+    "slow_front_left_wheel_attachment": [
+      500,
+      2000
+    ],
+    "slow_front_right_wheel_attachment": [
+      500,
+      2000
+    ],
+    "slow_back_left_wheel_attachment": [
+      500,
+      2000
+    ],
+    "slow_back_right_wheel_attachment": [
+      500,
+      2000
+    ],
+    "slow_front_wing_removal": [
+      1000,
+      2000
+    ],
+    "slow_front_wing_attachment": [
+      1000,
+      3000
+    ]
+  },
+  "modes": {
+    "my_team_career": true,
+    "non_career": false,
+    "challenge_career": false,
+    "driver_career": true
+  }
+}
